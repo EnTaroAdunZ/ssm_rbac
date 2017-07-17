@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etop.dao.RoleToPermissionMapper">
+    <resultMap id="BaseResultMap" type="com.etop.pojo.RoleToPermission">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="role" jdbcType="BIGINT" property="role.id" />
+        <result column="permission" jdbcType="BIGINT" property="permissionl.id" />
+    </resultMap>
+    <insert id="addItem" parameterType="com.etop.pojo.RoleToPermission" >
+        insert into role_rp_ref_permission
+        values(null,#{role.id},#{permission.id})
+    </insert>
+    <update id="deleteItem" parameterType="com.etop.pojo.RoleToPermission">
+        delete from role_rp_ref_permission
+        where role = #{role.id} and permission = #{permission.id}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from role_rp_ref_permission
+        where role = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

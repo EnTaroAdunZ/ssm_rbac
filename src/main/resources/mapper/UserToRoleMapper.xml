@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etop.dao.UserToRoleMapper">
+  <resultMap id="BaseResultMap" type="com.etop.pojo.UserToRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role" jdbcType="BIGINT" property="role.id" />
+    <result column="user" jdbcType="BIGINT" property="user.id" />
+  </resultMap>
+  <insert id="addItem" parameterType="com.etop.pojo.UserToRole">
+    insert into user_ur_ref_role
+    values(null,#{role.id},#{user.id})
+  </insert>
+  <insert id="deleteItem" parameterType="com.etop.pojo.UserToRole">
+    delete from user_ur_ref_role
+    where role = #{role.id} and user = #{user.id}
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from user_ur_ref_role
+    where user = #{id,jdbcType=BIGINT}
+  </delete>
+</mapper>

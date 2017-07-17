@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="file://C:/adt-bundle-windows-x86_64-20140702/apache-tomcat-7.0.79/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://C:/adt-bundle-windows-x86_64-20140702/apache-tomcat-7.0.79/lib" recursive="false" />
+  </library>
+</component>

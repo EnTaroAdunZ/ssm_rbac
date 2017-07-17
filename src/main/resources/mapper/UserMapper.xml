@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etop.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.etop.pojo.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="experience" jdbcType="BIGINT" property="experience" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.etop.pojo.User">
+    insert into tbl_user (id, name, phone, 
+      age, experience, account, 
+      password)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{experience,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.etop.pojo.User">
+    update tbl_user
+    set name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      experience = #{experience,jdbcType=BIGINT},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, phone, age, experience, account, password
+    from tbl_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, phone, age, experience, account, password
+    from tbl_user
+  </select>
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, name, phone, age, experience, account, password
+    from tbl_user
+    where account = #{account}
+  </select>
+  <resultMap type="com.etop.pojo.User" id="userPermission">
+      <collection property="roleList" ofType="com.etop.pojo.Role">
+        <id column="rid" property="id"/>
+        <result column="rsn" property="sn"/>
+        <result column="rname" property="name"/>
+    </collection>
+  </resultMap>
+  <select id="listPermission" resultMap="userPermission"  parameterType="java.lang.Long">
+    select tbl_role.id 'rid'
+    , tbl_role.name 'rname', tbl_role.sn 'rsn'
+    from  tbl_user
+    left join user_ur_ref_role  on tbl_user.id =user_ur_ref_role.user
+    left join tbl_role on tbl_role.id =user_ur_ref_role.role
+    WHERE  tbl_user.id = #{wid}
+  </select>
+</mapper>

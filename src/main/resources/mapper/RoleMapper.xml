@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etop.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.etop.pojo.Role">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sn" jdbcType="VARCHAR" property="sn" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.etop.pojo.Role">
+    insert into tbl_role (id, sn, name)
+    values (#{id,jdbcType=BIGINT}, #{sn,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.etop.pojo.Role">
+    update tbl_role
+    set sn = #{sn,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, sn, name
+    from tbl_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sn, name
+    from tbl_role
+  </select>
+  <resultMap type="com.etop.pojo.Role" id="rolePermission">
+    <collection property="permissionList" ofType="com.etop.pojo.Permission">
+      <id column="pid" property="id"/>
+      <result column="pexpression" property="expression"/>
+      <result column="pname" property="name"/>
+    </collection>
+  </resultMap>
+  <select id="listPermission" resultMap="rolePermission"  parameterType="java.lang.Long">
+    select tbl_permission.id 'pid'
+    , tbl_permission.name 'pname', tbl_permission.expression 'pexpression'
+    from  tbl_role
+    left join role_rp_ref_permission  on tbl_role.id =role_rp_ref_permission.role
+    left join tbl_permission on tbl_permission.id =role_rp_ref_permission.permission
+    WHERE  tbl_role.id = #{wid}
+  </select>
+</mapper>

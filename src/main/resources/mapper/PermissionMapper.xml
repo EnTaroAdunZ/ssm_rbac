@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etop.dao.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.etop.pojo.Permission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="expression" jdbcType="VARCHAR" property="expression" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.etop.pojo.Permission"  useGeneratedKeys="true" keyProperty="id">
+    insert into tbl_permission (id, expression, name
+      )
+    values (#{id,jdbcType=BIGINT}, #{expression,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.etop.pojo.Permission">
+    update tbl_permission
+    set expression = #{expression,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+  </select>
+
+</mapper>
