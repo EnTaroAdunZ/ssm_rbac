@@ -1,2 +1,3 @@
 # ssm_rbac
 使用SSM搭建的RBAC权限系统
+先把SQL语句导入，再到applicationContext.xml修改数据库名以及帐号密码
