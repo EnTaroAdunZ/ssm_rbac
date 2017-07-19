@@ -15,4 +15,5 @@ public interface IPermissionService {
     int insert(Permission record);
     int deleteByPrimaryKey(Long id);
     int updateByPrimaryKey(Permission record);
+    Permission selectByPrimaryKey(Long id);
 }

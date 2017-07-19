@@ -20,7 +20,7 @@ public class Msg {
 
     public static Msg fail(){
         Msg result = new Msg();
-        result.setCode(400);
+        result.setCode(200);
         result.setMsg("处理失败");
         return result;
     }

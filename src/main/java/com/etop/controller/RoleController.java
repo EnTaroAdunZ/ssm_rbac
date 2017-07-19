@@ -50,6 +50,21 @@ public class RoleController {
     }
 
 
+    @ResponseBody
+    @RequestMapping("/getRoleById")
+    public Msg getRoleById(@RequestParam(value = "ID")Long ID){
+        Role role = roleService.selectByPrimaryKey(ID);
+        if(role!=null){
+            return Msg.success().add("role",role);
+        }
+        else{
+            Msg fail = Msg.fail();
+            fail.setMsg("数据库错误，该角色不存在！");
+            return fail;
+        }
+    }
+
+
     @RequiredPermission("角色添加")
     @RequestMapping("/roleAdd")
     public ModelAndView roleAdd(Role role){

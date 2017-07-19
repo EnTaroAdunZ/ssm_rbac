@@ -8,13 +8,12 @@ import java.util.List;
 @Repository
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
-
     int insert(User record);
     int updateByPrimaryKey(User record);
     User selectByPrimaryKey(Long id);
-
     List<User> selectAll();
-    User  selectByAccount(String account);
-
+    User selectByAccount(String account);
+    User selectByName(String account);
     List<User> listPermission(Long id);
+    List<User> selectByKeyWord(String keyWord);
 }

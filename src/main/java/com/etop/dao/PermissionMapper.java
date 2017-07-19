@@ -12,9 +12,9 @@ public interface PermissionMapper {
     int insert(Permission record);
 
     Permission selectByPrimaryKey(Long id);
-
+    Permission selectByName(String name);
+    Permission selectByExpression(String expression);
     List<Permission> selectAll();
-
     int updateByPrimaryKey(Permission record);
 
 }

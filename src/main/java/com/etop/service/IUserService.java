@@ -11,9 +11,10 @@ public interface IUserService{
     List<User> getUsers();
     List<User> listPermission(Long id);
     User selectByPrimaryKey(Long id);
-
+    List<User> selectByKeyWord(String keyWord);
     int deleteByPrimaryKey(Long id);
-
+    boolean checkUserExit(String username);
     int insert(User record);
     int updateByPrimaryKey(User record);
+
 }

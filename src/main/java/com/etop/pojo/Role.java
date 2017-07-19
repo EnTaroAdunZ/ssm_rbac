@@ -14,8 +14,6 @@ public class Role {
 
     private List<Permission> permissionList;
 
-
-
     public List<Permission> getPermissionList() {
         return permissionList;
     }

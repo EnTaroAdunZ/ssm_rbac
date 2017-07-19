@@ -25,6 +25,16 @@
     from tbl_role
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectBySn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, sn, name
+    from tbl_role
+    where sn = #{sn}
+  </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, sn, name
+    from tbl_role
+    where name = #{name}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, sn, name
     from tbl_role

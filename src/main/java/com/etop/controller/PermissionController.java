@@ -35,6 +35,20 @@ public class PermissionController{
     @Autowired
     IRoleToPermissionService roleToPermissionService;
 
+    @RequestMapping("/getPermissionByEdit")
+    public Msg getPermissionByEdit(@RequestParam(value = "ID")Long ID){
+        Permission permission = permissionService.selectByPrimaryKey(ID);
+        if(permission==null){
+            Msg fail = Msg.fail();
+            fail.setMsg("数据库错误，该权限不存在！");
+            return fail;
+        }
+        else{
+            return Msg.success().add("permission",permission);
+        }
+
+    }
+
     @RequiredPermission("权限添加")
     @RequestMapping("/permissionAdd")
     public ModelAndView roleAdd(Permission permission,@RequestParam(value = "pn",defaultValue ="1")Integer pn, Model model){
@@ -60,6 +74,8 @@ public class PermissionController{
 
         return new ModelAndView("redirect:/homePage/permissionManagement");
     }
+
+
 
     @ResponseBody
     @RequiredPermission("分配角色权限")
@@ -113,15 +129,13 @@ public class PermissionController{
                         if(jsonName.equals(permissionName)){
 
                             permissionJson.setExit(true);
-                        }
-
+                            }
                         }
                     }
                 }
             }
         return Msg.success().add("permissionJsonList",permissionJsonList);
         }
-
     }
 
 

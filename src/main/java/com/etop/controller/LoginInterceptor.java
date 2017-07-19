@@ -32,9 +32,15 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session=httpServletRequest.getSession();
         Long id = (Long) session.getAttribute("id");
         if(id==null){
-            httpServletRequest.getRequestDispatcher("/login").forward(httpServletRequest,httpServletResponse);
 
-            return false;
+            if(url.indexOf("check")>=0||url.indexOf("ById")>=0){
+                return  true;
+            }else{
+                httpServletRequest.getRequestDispatcher("/login").forward(httpServletRequest,httpServletResponse);
+
+                return false;
+            }
+
         }
 
         String controllerName = "";

@@ -46,6 +46,11 @@
     from tbl_user
     where account = #{account}
   </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, name, phone, age, experience, account, password
+    from tbl_user
+    where name = #{name}
+  </select>
   <resultMap type="com.etop.pojo.User" id="userPermission">
       <collection property="roleList" ofType="com.etop.pojo.Role">
         <id column="rid" property="id"/>
@@ -60,5 +65,10 @@
     left join user_ur_ref_role  on tbl_user.id =user_ur_ref_role.user
     left join tbl_role on tbl_role.id =user_ur_ref_role.role
     WHERE  tbl_user.id = #{wid}
+  </select>
+  <select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, name, phone, age, experience, account, password
+    from tbl_user
+    WHERE name LIKE CONCAT(CONCAT('%',#{keyWord},'%')) or account LIKE CONCAT(CONCAT('%',#{keyWord},'%'))
   </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.etop.controller;
 
+import com.etop.pojo.Msg;
 import com.etop.pojo.Permission;
 import com.etop.pojo.Role;
 import com.etop.pojo.User;
@@ -12,6 +13,8 @@ import org.apache.tools.ant.taskdefs.condition.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +41,23 @@ public class LoginController{
         IUserService userService;
 
         @Autowired
-    IRoleService roleService;
+        IRoleService roleService;
+
+        @ResponseBody
+        @RequestMapping("/checkUser")
+        public Msg checkUser(@RequestParam(value = "username")String username,
+                               @RequestParam(value = "password")String password ){
+            User user = new User();
+            user.setAccount(username);
+            user.setPassword(password);
+            User temp=loginServiceImpl.login(user);
+            if(temp==null){
+                return Msg.fail();
+            }
+            else{
+                return Msg.success();
+            }
+        }
 
         @RequestMapping("/login")
         public ModelAndView handleEnter(){
@@ -46,11 +65,13 @@ public class LoginController{
             return mav;
         }
 
-    @RequestMapping("/notpermission")
-    public ModelAndView handleNotpermission(){
-        ModelAndView mav = new ModelAndView("notpermission");
-        return mav;
-    }
+        @RequestMapping("/notpermission")
+        public ModelAndView handleNotpermission(){
+            ModelAndView mav = new ModelAndView("notpermission");
+            return mav;
+        }
+
+
 
         @RequestMapping("/user/index")
         public ModelAndView handleLogin(User user, HttpServletRequest httpServletRequest){

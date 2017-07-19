@@ -16,6 +16,7 @@
     values (#{id,jdbcType=BIGINT}, #{expression,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
       )
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.etop.pojo.Permission">
     update tbl_permission
     set expression = #{expression,jdbcType=VARCHAR},
@@ -26,6 +27,16 @@
     select id, expression, name
     from tbl_permission
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+    where name = #{name}
+  </select>
+  <select id="selectByExpression" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+    where expression = #{expression}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, expression, name

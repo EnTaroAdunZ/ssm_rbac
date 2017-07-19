@@ -15,7 +15,7 @@ public interface IRoleService {
     int deleteByPrimaryKey(Long id);
 
     int insert(Role record);
-
+    Role selectByPrimaryKey(Long id);
     int updateByPrimaryKey(Role record);
     List<Role> listPermission(Long wid);
 }

@@ -29,8 +29,23 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public int insert(Role record) {
+    public int insert(Role record) throws RuntimeException{
+        Role role = roleMapper.selectByName(record.getName());
+        if(role==null){
+            throw new RuntimeException("该角色名已经存在，请重新输入！");
+        }
+        Role role1 = roleMapper.selectBySn(record.getSn());
+        if(role1==null){
+            throw new RuntimeException("该角色代码已经存在，请重新输入!");
+        }
+
+
         return roleMapper.insert(record);
+    }
+
+    @Override
+    public Role selectByPrimaryKey(Long id) {
+        return roleMapper.selectByPrimaryKey(id);
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.etop.service.Impl;
 import com.etop.dao.UserMapper;
 import com.etop.pojo.User;
 import com.etop.service.IUserService;
+import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,12 +35,36 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    public List<User> selectByKeyWord(String keyWord) {
+
+
+        return userMapper.selectByKeyWord(keyWord);
+    }
+
+    @Override
     public int deleteByPrimaryKey(Long id) {
         return userMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public int insert(User record) {
+    public boolean checkUserExit(String username) {
+        User user = userMapper.selectByAccount(username);
+        if(user!=null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int insert(User record) throws RuntimeException{
+        User user = userMapper.selectByAccount(record.getAccount());
+        if(user!=null){
+            throw new RuntimeException("帐号已经存在！请换一个帐号!");
+        }
+        User user1 = userMapper.selectByName(user.getName());
+        if(user1!=null){
+            throw new RuntimeException("昵称已经存在！请换一个昵称!");
+        }
         return userMapper.insert(record);
     }
 

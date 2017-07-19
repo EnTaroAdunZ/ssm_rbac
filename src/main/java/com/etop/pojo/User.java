@@ -2,6 +2,7 @@ package com.etop.pojo;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Component
@@ -18,6 +19,7 @@ public class User {
 
     private String account;
 
+    @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "用户名必须是3-16位英文和数字组合")
     private String password;
 
     private List<Role> roleList;

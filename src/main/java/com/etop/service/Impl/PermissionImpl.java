@@ -77,8 +77,15 @@ public class PermissionImpl implements IPermissionService,ApplicationContextAwar
     }
 
     @Override
-    public int insert(Permission record) {
-
+    public int insert(Permission record) throws RuntimeException{
+        Permission permission = permissionMapper.selectByExpression(record.getExpression());
+        if(permission!=null){
+            throw new RuntimeException("权限表达式已存在！请重新输入！");
+        }
+        Permission permission1 = permissionMapper.selectByName(record.getName());
+        if (permission != null) {
+            throw new RuntimeException("权限名已经存在！请重新输入！");
+        }
         return   permissionMapper.insert(record);
     }
 
@@ -90,6 +97,11 @@ public class PermissionImpl implements IPermissionService,ApplicationContextAwar
     @Override
     public int updateByPrimaryKey(Permission record) {
         return permissionMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Permission selectByPrimaryKey(Long id) {
+        return permissionMapper.selectByPrimaryKey(id);
     }
 
     @Override
