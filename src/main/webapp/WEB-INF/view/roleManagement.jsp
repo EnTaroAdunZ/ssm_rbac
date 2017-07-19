@@ -189,7 +189,7 @@
             </li>
             <li  class="current"><a href="homePage/roleManagement"><span class="icon icon-pencil"></span>角色管理</a></li>
             <li ><a href="homePage/permissionManagement"><span class="icon icon-message"></span>权限管理</a></li>
-            <li><a href=""><span class="icon icon-chart"></span>功能模拟</a></li>
+            <li><a href="permission/permissionTest"><span class="icon icon-chart"></span>功能模拟</a></li>
         </ul>
 
         <div class="headerwidget">

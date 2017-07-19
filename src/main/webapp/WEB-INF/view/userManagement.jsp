@@ -419,6 +419,27 @@
                 <img src="assets/img/avatar1.png" alt=""/>
                 <span>尊敬的用户，欢迎您</span>
             </div><!--userinfo-->
+            <div class="userinfodrop">
+                <div class="avatar">
+                    <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
+                    <div class="changetheme">
+                        切换主题: <br />
+                        <a class="default"></a>
+                        <a class="blueline"></a>
+                        <a class="greenline"></a>
+                        <a class="contrast"></a>
+                        <a class="custombg"></a>
+                    </div>
+                </div><!--avatar-->
+                <div class="userdata">
+                    <h4>Juan</h4>
+                    <span class="email">youremail@yourdomain.com</span>
+                    <ul>
+                        <li><a href="editprofile.html">个人主页</a></li>
+                        <li><a href="index.html">退出</a></li>
+                    </ul>
+                </div><!--userdata-->
+            </div><!--userinfodrop-->
 
         </div><!--right-->
     </div><!--topheader-->
@@ -430,7 +451,7 @@
             </li>
             <li><a href="homePage/roleManagement"><span class="icon icon-pencil"></span>角色管理</a></li>
             <li><a href="homePage/permissionManagement"><span class="icon icon-message"></span>权限管理</a></li>
-            <li><a href=""><span class="icon icon-chart"></span>功能模拟</a></li>
+            <li><a href="permission/permissionTest"><span class="icon icon-chart"></span>功能模拟</a></li>
         </ul>
 
         <div class="headerwidget">

@@ -1,15 +1,12 @@
 package com.etop.controller;
 
 import com.etop.pojo.Msg;
-import com.etop.pojo.Permission;
 import com.etop.pojo.Role;
 import com.etop.pojo.User;
 import com.etop.service.IPermissionService;
 import com.etop.service.IRoleService;
 import com.etop.service.IUserService;
 import com.etop.service.IloginService;
-import com.etop.service.Impl.LoginServiceImpl;
-import org.apache.tools.ant.taskdefs.condition.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -42,6 +38,9 @@ public class LoginController{
 
         @Autowired
         IRoleService roleService;
+
+        @Autowired
+        PermissionController permissionController;
 
         @ResponseBody
         @RequestMapping("/checkUser")
@@ -70,6 +69,8 @@ public class LoginController{
             ModelAndView mav = new ModelAndView("notpermission");
             return mav;
         }
+
+
 
 
 
@@ -108,8 +109,6 @@ public class LoginController{
 
                     session.removeAttribute("id");
                     session.removeAttribute("userPermission");
-
-
                     List<User> users = userService.listPermission(temp.getId());
                     HashSet<String> userPerssion=new HashSet<String>();
                     if(users!=null)
@@ -129,6 +128,9 @@ public class LoginController{
                                 }
                             }
                         }
+
+
+
                     session.setAttribute("id",temp.getId());
                     session.setAttribute("userPermission",userPerssion);
                     ModelAndView mav = new ModelAndView("personalHomepage");

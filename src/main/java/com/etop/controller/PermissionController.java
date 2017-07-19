@@ -4,6 +4,7 @@ import com.etop.pojo.*;
 import com.etop.service.IPermissionService;
 import com.etop.service.IRoleService;
 import com.etop.service.IRoleToPermissionService;
+import com.etop.service.IUserService;
 import com.etop.util.RequiredPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -27,6 +31,9 @@ public class PermissionController{
 
 
     @Autowired
+    IUserService userService;
+
+    @Autowired
     IPermissionService permissionService;
 
     @Autowired
@@ -34,6 +41,7 @@ public class PermissionController{
 
     @Autowired
     IRoleToPermissionService roleToPermissionService;
+
 
     @RequestMapping("/getPermissionByEdit")
     public Msg getPermissionByEdit(@RequestParam(value = "ID")Long ID){
@@ -78,6 +86,42 @@ public class PermissionController{
 
 
     @ResponseBody
+    @RequestMapping("/permissionModel")
+    public Msg permissionModel(@RequestParam(value = "ID",defaultValue ="0") Long ID,HttpServletRequest httpServletRequest){
+        HttpSession session =
+                httpServletRequest.getSession();
+        Long id = (Long) session.getAttribute("id");
+        List<User> users = userService.listPermission(id);
+        HashSet<String> userPerssion=new HashSet<String>();
+        if(users!=null)
+            for(User u:users){
+                if(u!=null&&u.getRoleList()!=null){
+
+                    List<Role> roles = roleService.listPermission(u.getRoleList().get(0).getId());
+                    if(roles!=null){
+                        for(Role role:roles){
+                            if(role!=null){
+                                String expression = role.getPermissionList().get(0).getExpression();
+                                if(!userPerssion.contains(expression))
+                                    userPerssion.add(expression);
+                            }
+                        }
+
+                    }
+                }
+            }
+        Permission permission = permissionService.selectByPrimaryKey(ID);
+        if(userPerssion.contains(permission.getExpression())){
+            return Msg.success();
+        }else{
+            return Msg.fail();
+        }
+
+
+    }
+
+
+    @ResponseBody
     @RequiredPermission("分配角色权限")
     @RequestMapping(value = "/updatePermissionJson", method = RequestMethod.GET)
     public Msg updatePermissionJson(
@@ -102,6 +146,17 @@ public class PermissionController{
             roleToPermissionService.addItem(roleToPermission);
         }
         return Msg.success();
+    }
+
+
+
+
+    @RequestMapping("/permissionTest")
+    public ModelAndView permissionTest(){
+        ModelAndView mav = new ModelAndView("permissionTest");
+        List<Permission> list = permissionService.list();
+        mav.addObject("permission",list);
+        return mav;
     }
 
     @ResponseBody

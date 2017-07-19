@@ -48,7 +48,9 @@ public class UserController{
                                ){
         PageHelper.startPage(pn, 10);
         List<User> users = userService.selectByKeyWord(KeyWord);
+        System.out.println(users.size());
         PageInfo pageInfo=new PageInfo(users);
+        System.out.println(pageInfo);
         return Msg.success().add("pageInfo",pageInfo);
     }
 
