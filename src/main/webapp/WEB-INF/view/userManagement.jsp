@@ -53,12 +53,16 @@
             margin-right: 5px;
         }
     </style>
+    <%
+        HttpSession s = request.getSession();
+        Long userID= (Long) s.getAttribute("id");
+    %>
     <script>
         var ID;
         var KW;
 
         $(document).ready(function () {
-            
+
             $(".userinfo").click(function () {
                 $(".userinfo").toggleClass("active");
                 var style=$(".userinfodrop").attr("style");
@@ -70,7 +74,6 @@
                     $("#userinfodrop").attr("style","display:block;");
                 }
             });
-            
             window.onload =function() { KW=""; goToPage(KW,1) };
             $(document).on('click','.deleteBtn',function(){
                     ID = $(this).attr("name");
@@ -89,11 +92,12 @@
                             var user = result.extend.user;
                             $("#editName").attr("value", user.name);
                             $("#editAccount").attr("value", user.account);
-                            $("#editPassword").attr("value", user.password);
-                            $("#editRePassword").attr("value", user.password);
+//                            $("#editPassword").attr("value", user.password);
+//                            $("#editRePassword").attr("value", user.password);
                             $("#editPhone").attr("value", user.phone);
                             $("#editAge").attr("value", user.age);
                             $("#editExperience").attr("value", user.experience);
+                            $('#edit_form')[0].reset();
 
                         }
                     });
@@ -172,8 +176,6 @@
                 });
 
             });
-
-
 
             $(document).on("click", ".btn_page", function () {
 
@@ -279,7 +281,19 @@
                     td.append(btn2);
                     td.append(btn3);
                     tr.append(td);
+                }else if(item.id==<%=userID %>){
+                    var btn2=$("<button></button>")
+                        .addClass("editBtn btn btn-warning glyphicon glyphicon-cog btn-sm ajax_btn")
+                        .attr("data-toggle","modal").attr("data-target","#editModal").attr("name",item.id)
+                        .append(" 编辑");
+                    var btn3=$("<button></button>")
+                        .addClass("btn btn-danger glyphicon glyphicon-trash btn-sm disabled ajax_btn")
+                        .append("禁止删除");
+                    td.append(btn2);
+                    td.append(btn3);
+                    tr.append(td);
                 }
+
                 else{
                     var btn2=$("<button></button>")
                         .addClass("editBtn btn btn-warning glyphicon glyphicon-cog btn-sm ajax_btn")
@@ -371,7 +385,6 @@
                 pageNav.append(div3);
                }
 
-
             //低版本的触发
 //            $("#keyword").change(function () {
 //                var KeyWord=$(this).val();
@@ -423,6 +436,215 @@
 //                    });
 //                })
 //            });
+
+            var isNameCurrent=[false,false];
+            var isPhoneCurrent=[false,false];
+            var isAgeCurrent=[false,false];
+            var isAccountCurrent=[false,false];
+            var isPasswordCurrent=[false,false];
+            var isRePasswordCurrent=[false,false];
+            var isExperienceCurrent=[false,false];
+
+            $(document).on('click', '#btn_add', function() {
+                checkAccount("#add_account",0);
+                checkAge("#add_age",0);
+                checkPhone("#add_phone",0);
+                checkPassword("#add_password",0);
+                checkExperience("#add_experience",0);
+                checkName("#add_name",0);
+                checkRePassword("#add_password","#add_repassword",0);
+                if(isNameCurrent[0]==true&& isPhoneCurrent[0]==true&&
+                    isAgeCurrent[0]==true&& isAccountCurrent[0]==true&&
+                    isPasswordCurrent[0]==true&& isRePasswordCurrent[0]==true&&
+                    isExperienceCurrent[0]==true){
+                    $.ajax({
+                        url: "user/userAdd",
+                        data:$("#add_form").serialize(),
+                        type: "POST",
+                        success: function (result) {
+                            if(result.code==100){
+                                $("#btn_closeAdd").click();
+                                goToPage("",${pageInfo.pages});
+                            }else{
+                                var errorMap=result.extend.errorMap;
+                                $.each(errorMap,function (index,item) {
+                                    show_help_block(index,"error",item);
+                                });
+                            }
+                        }
+                    });
+                }
+
+
+            });
+
+            $(document).on('click', '#btn_edit', function() {
+                var index=1;
+                checkAccount("#editAccount",index);
+                checkAge("#editAge",index);
+                checkPhone("#editPhone",index);
+                checkPassword("#editPassword",index);
+                checkExperience("#editExperience",index);
+                checkName("#editName",index);
+                checkRePassword("#editPassword","#editRepassword",index);
+                if(isNameCurrent[index]==true&& isPhoneCurrent[index]==true&&
+                    isAgeCurrent[index]==true&& isAccountCurrent[index]==true&&
+                    isPasswordCurrent[index]==true&& isRePasswordCurrent[index]==true&&
+                    isExperienceCurrent[index]==true){
+                    $.ajax({
+                        url: "user/userEdit",
+                        data:$("#edit_form").serialize(),
+                        type: "POST",
+                        success: function (result) {
+                            if(result.code==100){
+
+                                $("#btn_closeEdit").click();
+
+                                goToPage(KW,$("ul.pagination li.active a").attr("name"));
+
+                            }else{
+                                var errorMap=result.extend.errorMap;
+                                $.each(errorMap,function (index,item) {
+                                    show_help_block(index,"error",item);
+
+                                });
+                            }
+                        }
+                    });
+                }
+
+
+            });
+
+            function checkName(ele,num) {
+                checkAdd(ele,
+                    /^[\u4e00-\u9fa5a-zA-Z0-9_]{1,7}$/,
+                    isNameCurrent,num,
+                    "昵称最长不得超过7个汉字，或14个字节(数字，字母和下划线)"
+                );
+            }
+            function checkAge(ele,num) {
+                checkAdd(ele,
+                    /^[1-9]\d?$|^1[0-4]\d$|^0$|^150$/,
+                    isAgeCurrent,num,
+                    "年龄必须介于0-150之间"
+                );
+            }
+            function checkPhone(ele,num) {
+                checkAdd(ele,
+                    /^[0-9]{3,16}$/,
+                    isPhoneCurrent,num,
+                    "手机必须位于3-16位之间"
+                );
+            }
+            function checkAccount(ele,num) {
+                checkAdd(ele,
+                    /^[a-z0-9_-]{3,16}$/,
+                    isAccountCurrent,num,
+                    "帐号必须是3-16位英文和数字组合"
+                );
+            }
+            function checkPassword(ele,num) {
+                checkAdd(ele,
+                    /^[a-z0-9_-]{3,16}$/,
+                    isPasswordCurrent,num,
+                    "密码必须是3-16位英文和数字组合"
+                );
+            }
+            function checkExperience(ele,num) {
+                checkAdd(ele,
+                    /^[0-9]{0,9}$/,
+                    isExperienceCurrent,num,
+                    "经验值必须介于0-999999999"
+                );
+            }
+            function checkRePassword(ele1,ele2,num) {
+                var pass1=$(ele1).val();
+                var pass2=$(ele2).val();
+                if(isPasswordCurrent[num]==true){
+                    if(pass1==pass2){
+                        isRePasswordCurrent[num]=true;
+                        show_help_block(ele1,"success","密码输入一致");
+                        show_help_block(ele2,"success","密码输入一致");
+                    }else{
+                        isRePasswordCurrent[num]=false;
+                        show_help_block(ele1,"error","两次输入的帐号密码必须一致");
+                        show_help_block(ele2,"error","两次输入的帐号密码必须一致");
+                    }
+                }
+            }
+
+            $("#editName").bind('input propertychange',function () {checkName("#editName",1);});
+            $("#editAge").bind('input propertychange',function () {
+                checkAge("#editAge",1);
+            });
+            $("#editExperience").bind('input propertychange',function () {
+                checkExperience("#editExperience",1);
+            });
+            $("#editPassword").bind('input propertychange', function () {
+                checkPassword("#editPassword",1);
+            });
+            $("#editRePassword").bind('input propertychange',function () {
+                checkRePassword("#editPassword","#editRePassword",1);
+            });
+            $("#editPhone").bind('input propertychange',function () {
+                checkPhone("#editPhone",1);
+            });
+            $("#editAccount").bind('input propertychange',function () {
+                checkAccount("#editAccount",1);
+            });
+
+
+            $("#add_name").bind('input propertychange',function () {checkName("#add_name",0);});
+            $("#add_age").bind('input propertychange',function () {
+                checkAge("#add_age",0);
+            });
+            $("#add_experience").bind('input propertychange',function () {
+                checkExperience("#add_experience",0);
+            });
+            $("#add_password").bind('input propertychange', function () {
+                checkPassword("#add_password",0);
+            });
+            $("#add_repassword").bind('input propertychange',function () {
+                checkRePassword("#add_password","#add_repassword",0);
+            });
+            $("#add_phone").bind('input propertychange',function () {
+                checkPhone("#add_phone",0);
+            });
+            $("#add_account").bind('input propertychange',function () {
+                checkAccount("#add_account",0);
+            });
+
+
+            function checkAdd(ele,reg,judge,num,tip){
+                judge[num]=false;
+                var regWord=$(ele).val();
+                if(regVerify(ele,regWord,reg,tip)==true){
+                    judge[num]=true;
+                }
+            }
+            function regVerify(ele,regWord,reg,tip) {
+                if(reg.test(regWord)){
+                    show_help_block(ele,"success","格式输入正确！");
+                    return true;
+                }
+                else{
+                    show_help_block(ele,"error",tip);
+                    return false;
+                }
+            }
+            function show_help_block(ele,status,msg) {
+                $(ele).parent().removeClass("has-success has-warning")
+                if(status=="success"){
+                    $(ele).parent().addClass("has-success");
+                    $(ele).next("span").text(msg);
+                }else if(status=="error"){
+                    $(ele).parent().addClass("has-warning");
+                    $(ele).next("span").text(msg);
+                }
+            }
+
+
         });
     </script>
 </head>
@@ -512,7 +734,7 @@
             <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="user/userAdd" method="post">
+                        <form id="add_form" role="form" action="user/userAdd" method="post">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -520,39 +742,42 @@
                             </div>
                             <div class="modal-body">
                                 <p>姓名</p>
-                                <input id="input_name" class="form-control" type="text" name="name"></input>
+                                <input id="add_name" class="form-control" type="text" name="name"/>
                                 <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>手机</p>
-                                <input class="form-control" type="text" name="phone"></input>
+                                <input id="add_phone" class="form-control" type="text" name="phone"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>年龄</p>
-                                <input class="form-control" type="number" name="age"></input>
+                                <input id="add_age" class="form-control" type="number" name="age"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>经验</p>
-                                <input class="form-control" type="number" name="experience"></input>
+                                <input id="add_experience" class="form-control" type="number" name="experience"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>帐号</p>
-                                <input id="input_account" class="form-control" type="text" name="account"></input>
+                                <input  id="add_account" class="form-control" type="text" name="account"></input>
                                 <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>密码</p>
-                                <input class="form-control" type="password" name="password"></input>
+                                <input id="add_password" class="form-control" type="password" name="password"></input>
                                 <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>重复密码</p>
-                                <input class="form-control" type="password" name="password"></input>
+                                <input id="add_repassword" class="form-control" type="password" ></input>
                                 <span class="help-block"></span>
                             </div>
                             <div class="modal-footer">
-                                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-                                <button class="btn btn-primary" type="submit">提交</button>
+                                <button id="btn_closeAdd" data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                                <button id="btn_add" class="btn btn-primary" type="button">提交</button>
                             </div>
                         </form>
                     </div><!-- /.modal-content -->
@@ -585,7 +810,7 @@
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="user/userEdit" method="post">
+                        <form role="form" action="user/userEdit" method="post" id="edit_form">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -594,39 +819,47 @@
                             <div class="modal-body">
                                 <p>ID</p>
                                 <input id="editID" name="id" readonly="readonly" class="form-control" type="text"
-                                       name="expression"></input>
+                                       name="expression"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>姓名</p>
-                                <input id="editName" class="form-control" type="text" name="name"></input>
+                                <input id="editName" class="form-control" type="text" name="name" >
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>手机</p>
-                                <input id="editPhone" class="form-control" type="text" name="phone"></input>
+                                <input id="editPhone" class="form-control" type="text" name="phone"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>年龄</p>
-                                <input id="editAge" class="form-control" type="number" name="age"></input>
+                                <input id="editAge" class="form-control" type="number" name="age"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>经验</p>
-                                <input id="editExperience" class="form-control" type="number" name="experience"></input>
+                                <input id="editExperience" class="form-control" type="number" name="experience"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>帐号</p>
-                                <input id="editAccount" class="form-control" type="text" name="account"></input>
+                                <input id="editAccount" class="form-control" type="text" name="account"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>密码</p>
-                                <input id="editPassword" class="form-control" type="password" name="password"></input>
+                                <input id="editPassword" class="form-control" type="password" name="password"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>重复密码</p>
-                                <input id="editRePassword" class="form-control" type="password"></input>
+                                <input id="editRepassword" class="form-control" type="password"/>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-footer">
-                                <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-                                <button class="btn btn-primary" type="submit">提交</button>
+                                <button id="btn_closeEdit" data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                                <button id="btn_edit" class="btn btn-primary" type="button">提交</button>
                             </div>
                         </form>
                     </div>

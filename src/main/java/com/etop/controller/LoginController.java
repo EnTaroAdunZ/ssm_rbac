@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -81,17 +83,25 @@ public class LoginController {
 
 
     @RequestMapping("/user/index")
-    public ModelAndView handleLogin(@Valid User user, BindingResult result, HttpServletRequest httpServletRequest) {
-        if (result.hasErrors()) {
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError1 : fieldErrors) {
-                stringBuilder.append(fieldError1.getDefaultMessage()+"\n");
-            }
+    public ModelAndView handleLogin(User user, HttpServletRequest httpServletRequest) {
+        Pattern reg = Pattern.compile("^[a-z0-9_-]{3,16}$");
+        Matcher accMat = reg.matcher(user.getAccount());
+        boolean accMatRe = accMat.matches();
+        Matcher passMat = reg.matcher(user.getPassword());
+        boolean passMatRe = passMat.matches();
+        if(accMatRe==false||passMatRe==false){
             ModelAndView mav = new ModelAndView("400");
-            mav.addObject("msg",stringBuilder.toString());
+            mav.addObject("msg", "帐号密码必须是3-16位英文和数字组合");
             return mav;
         }
+//        if (result.hasErrors()) {
+//            List<FieldError> fieldErrors = result.getFieldErrors();
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (FieldError fieldError1 : fieldErrors) {
+//                stringBuilder.append(fieldError1.getDefaultMessage()+"\n");
+//            }
+//
+//        }
         HttpSession session =
                 httpServletRequest.getSession();
         Long id = (Long) session.getAttribute("id");
@@ -126,7 +136,6 @@ public class LoginController {
                 if (users != null)
                     for (User u : users) {
                         if (u != null && u.getRoleList() != null) {
-
                             List<Role> roles = roleService.listPermission(u.getRoleList().get(0).getId());
                             if (roles != null) {
                                 for (Role role : roles) {

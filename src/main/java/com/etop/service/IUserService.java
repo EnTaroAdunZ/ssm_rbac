@@ -13,7 +13,8 @@ public interface IUserService{
     User selectByPrimaryKey(Long id);
     List<User> selectByKeyWord(String keyWord);
     int deleteByPrimaryKey(Long id);
-    boolean checkUserExit(String username);
+    boolean checkUserNameExit(String username);
+    boolean checkUserAccountExit(String account);
     int insert(User record);
     int updateByPrimaryKey(User record);
 

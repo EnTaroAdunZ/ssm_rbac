@@ -46,12 +46,21 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public boolean checkUserExit(String username) {
-        User user = userMapper.selectByAccount(username);
+    public boolean checkUserNameExit(String username) {
+        User user = userMapper.selectByName(username);
         if(user!=null){
-            return false;
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean checkUserAccountExit(String account) {
+        User user=userMapper.selectByAccount(account);
+        if(user!=null){
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.etop.pojo;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -9,12 +11,18 @@ import java.util.List;
 public class User {
     private Long id;
 
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9_]{1,14}$",message = "昵称最长不得超过7个汉字，或14个字节(数字，字母和下划线)")
     private String name;
 
+    @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "手机必须位于3-16位之间")
     private String phone;
 
+    @Max(value=150,message="年龄必须介于0-150之间")
+    @Min(value=0,message="年龄必须介于0-150之间")
     private Integer age;
 
+    @Max(value=999999999,message="经验值必须介于0-999999999")
+    @Min(value=0,message="经验值必须介于0-999999999")
     private Long experience;
 
     @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "帐号密码必须是3-16位英文和数字组合")

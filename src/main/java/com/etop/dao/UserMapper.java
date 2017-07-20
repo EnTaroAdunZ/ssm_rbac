@@ -13,7 +13,7 @@ public interface UserMapper {
     User selectByPrimaryKey(Long id);
     List<User> selectAll();
     User selectByAccount(String account);
-    User selectByName(String account);
+    User selectByName(String name);
     List<User> listPermission(Long id);
     List<User> selectByKeyWord(String keyWord);
 }

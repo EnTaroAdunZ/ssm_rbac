@@ -25,6 +25,13 @@ public class Msg {
         return result;
     }
 
+    public static Msg reject(){
+        Msg result = new Msg();
+        result.setCode(300);
+        result.setMsg("拒绝请求");
+        return result;
+    }
+
     public Msg add(String key,Object value){
          this.getExtend().put(key,value);
          return this;
