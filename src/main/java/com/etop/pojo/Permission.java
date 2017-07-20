@@ -2,12 +2,13 @@ package com.etop.pojo;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class Permission {
     private Long id;
-
+//    @Pattern(regexp = "^[a-z0-9.-]{3,30}$",message = "权限标识符必须是3-30位英文和数字组合")
     private String expression;
-
+//    @Pattern(regexp = "^[\\u2E80-\\u9FFF]{1,10}$",message = "权限名必须是3-30位英文和数字组合")
     private String name;
 
     @Override

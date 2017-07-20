@@ -31,6 +31,8 @@ public class insertUser {
     @Autowired
     IUserService userService;
 
+
+
     @Test
     public void testListP(){
         List<User> users = userService.listPermission(1L);
@@ -45,8 +47,7 @@ public class insertUser {
 
     @Test
     public void test(){
-        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        for(int i=101;i<=1001;i++){
+        for(int i=3;i<=1001;i++){
             User user=new User();
             user.setName(i+"号机");
             user.setAccount("ztf"+i);
@@ -57,7 +58,7 @@ public class insertUser {
             long l = random.nextLong()%100000000+100000000;
             user.setExperience(l);
             user.setPhone("0752-"+String.valueOf(l));
-            mapper.insert(user);
+            userService.insert(user);
         }
     }
 

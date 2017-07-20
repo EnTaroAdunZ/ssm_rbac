@@ -24,11 +24,14 @@
             out-line: none;
             color: #ffffff
         }
+        .userdata ul li a{
+            color: #000000!important;
+        }
 
         a:hover, a:visited, a:link, a:active {
             text-decoration: none;
             out-line: none;
-            color: #ffffff
+            color: #ffffff;
         }
 
         .roleBtnShow {
@@ -55,6 +58,19 @@
         var KW;
 
         $(document).ready(function () {
+            
+            $(".userinfo").click(function () {
+                $(".userinfo").toggleClass("active");
+                var style=$(".userinfodrop").attr("style");
+                if(style=="display:block;"){
+                    $("#userinfodrop").removeAttr("style");
+                    $("#userinfodrop").attr("style","display:none;");
+                }else{
+                    $("#userinfodrop").removeAttr("style");
+                    $("#userinfodrop").attr("style","display:block;");
+                }
+            });
+            
             window.onload =function() { KW=""; goToPage(KW,1) };
             $(document).on('click','.deleteBtn',function(){
                     ID = $(this).attr("name");
@@ -215,6 +231,23 @@
                     }
                 });
             }
+
+            $("#input_name").change( function () {
+                var userName=$(this).val();
+                $.ajax({
+                    url: "user/checkUserExit",
+                    data: "userName"+userName,
+                    type: "GET",
+                    success: function (result) {
+                        $("#input_name").next("span").innerHTML("");
+                        if(result.code==100){
+                            $("#input_name").next("span").innerHTML("姓名不存在，可以注册！");
+                        }else{
+                            $("#input_name").next("span").innerHTML("姓名存在，请重新输入！");
+                        }
+                    }
+                });
+            });
 
             function build_user_tal(item) {
                 var tr=$("<tr></tr>").addClass("tr_user");
@@ -419,9 +452,9 @@
                 <img src="assets/img/avatar1.png" alt=""/>
                 <span>尊敬的用户，欢迎您</span>
             </div><!--userinfo-->
-            <div class="userinfodrop">
+            <div id="userinfodrop" class="userinfodrop" style="display:none;">
                 <div class="avatar">
-                    <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
+                    <img src="assets/img/avatar1.png" alt="" />
                     <div class="changetheme">
                         切换主题: <br />
                         <a class="default"></a>
@@ -432,11 +465,13 @@
                     </div>
                 </div><!--avatar-->
                 <div class="userdata">
-                    <h4>Juan</h4>
-                    <span class="email">youremail@yourdomain.com</span>
+                    <h4>Van</h4>
+                    <span class="email">do you want to 玩游戏？</span>
                     <ul>
-                        <li><a href="editprofile.html">个人主页</a></li>
-                        <li><a href="index.html">退出</a></li>
+                        <li ><a href="javascript:;">开发中</a></li>
+                        <li ><a href="javascript:;">开发中</a></li>
+                        <li ><a href="user/index" style="font-color: black;">个人主页</a></li>
+                        <li ><a href="homePage/exit">退出</a></li>
                     </ul>
                 </div><!--userdata-->
             </div><!--userinfodrop-->
@@ -485,7 +520,8 @@
                             </div>
                             <div class="modal-body">
                                 <p>姓名</p>
-                                <input class="form-control" type="text" name="name"></input>
+                                <input id="input_name" class="form-control" type="text" name="name"></input>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>手机</p>
@@ -501,11 +537,18 @@
                             </div>
                             <div class="modal-body">
                                 <p>帐号</p>
-                                <input class="form-control" type="text" name="account"></input>
+                                <input id="input_account" class="form-control" type="text" name="account"></input>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-body">
                                 <p>密码</p>
                                 <input class="form-control" type="password" name="password"></input>
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="modal-body">
+                                <p>重复密码</p>
+                                <input class="form-control" type="password" name="password"></input>
+                                <span class="help-block"></span>
                             </div>
                             <div class="modal-footer">
                                 <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
@@ -579,7 +622,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>重复密码</p>
-                                <input id="editRePassword" class="form-control" type="password" name="password"></input>
+                                <input id="editRePassword" class="form-control" type="password"></input>
                             </div>
                             <div class="modal-footer">
                                 <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>

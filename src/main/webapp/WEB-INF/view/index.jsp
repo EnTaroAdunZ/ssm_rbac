@@ -17,7 +17,6 @@
         <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <title>权限管理系统</title>
-
         <!-- CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
 
@@ -41,8 +40,14 @@
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
         <script>
             $(document).ready(function () {
+
+                var isUserNameRegCorrect=false;
+                var isUserPasswordRegCorrect=false;
+
                 $("#btn_login_sumbit").click(function () {
-                    if(regVerify()){
+                    checkUserName();
+                    checkPassWord();
+                    if(isUserNameRegCorrect==true&&isUserPasswordRegCorrect==true){
                         var username=$("#form-username").val();
                         var password=$("#form-password").val();
                         $.ajax({
@@ -55,33 +60,47 @@
                                     show_help_block("#form-password","error","帐号或密码错误，请检查");
                                 }else if(result.code==100){
                                     $("#loginForm").submit();
-                                }
+                            }
                             }
                         });
-
                     }
                 });
-
-                function regVerify() {
+                function checkUserName(){
+                    isUserNameRegCorrect=false;
                     var username=$("#form-username").val();
+                    if(regVerify("#form-username",username)==true){
+                        isUserNameRegCorrect=true;
+                    }
+                }
+                function checkPassWord(){
+                    isUserPasswordRegCorrect=false;
                     var password=$("#form-password").val();
+                    if(regVerify("#form-password",password)==true){
+                        isUserPasswordRegCorrect=true;
+                    }
+                }
+
+
+
+                $("#form-username").bind('input propertychange', function(){
+                    checkUserName();
+                });
+
+                $("#form-password").bind('input propertychange', function(){
+                    checkPassWord();
+                });
+
+                function regVerify(ele,regWord) {
                     var reg=/^[a-z0-9_-]{3,16}$/;
                     var tip="用户名密码格式不对，请输入3-16位数字或字母";
-                    if(reg.test(username  )){
-                        show_help_block("#form-username","success","输入正确！");
+                    if(reg.test(regWord  )){
+                        show_help_block(ele,"success","格式输入正确！");
+                        return true;
                     }
                     else{
-                        show_help_block("#form-username","error",tip);
+                        show_help_block(ele,"error",tip);
                         return false;
                     }
-                    if(reg.test(password)){
-                        show_help_block("#form-password","success","输入正确！");
-                    }
-                    else{
-                        show_help_block("#form-password","error",tip);
-                        return false;
-                    }
-                    return true;
                 }
 
 

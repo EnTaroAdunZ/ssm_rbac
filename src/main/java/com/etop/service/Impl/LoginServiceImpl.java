@@ -4,6 +4,7 @@ package com.etop.service.Impl;
 import com.etop.dao.UserMapper;
 import com.etop.pojo.User;
 import com.etop.service.IloginService;
+import com.etop.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +23,16 @@ public class LoginServiceImpl implements IloginService {
         User temp = null;
         temp=userMapper.selectByAccount(user.getAccount());
         if(temp==null){
-            return  temp;
+            return null;
+        }else{
+            boolean verify = PasswordUtil.verify(user.getPassword(), temp.getPassword());
+            if(verify){
+                return temp;
+            }else{
+                return null;
+            }
         }
-        else{
-            return temp;
-        }
+
     }
 
     @Override

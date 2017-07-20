@@ -17,9 +17,10 @@ public class User {
 
     private Long experience;
 
+    @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "帐号密码必须是3-16位英文和数字组合")
     private String account;
 
-    @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "用户名必须是3-16位英文和数字组合")
+    @Pattern(regexp = "^[a-z0-9_-]{3,16}$",message = "帐号密码必须是3-16位英文和数字组合")
     private String password;
 
     private List<Role> roleList;

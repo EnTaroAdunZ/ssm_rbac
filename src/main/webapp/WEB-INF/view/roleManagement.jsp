@@ -41,6 +41,9 @@
             background: #485b79;
 
         }
+        .userdata ul li a{
+            color: #000000!important;
+        }
 
         #leftBg {
             top: 179px;
@@ -56,6 +59,17 @@
                     $("#deleteID").attr("value", ID);
 
                 })
+            });
+            $(".userinfo").click(function () {
+                $(".userinfo").toggleClass("active");
+                var style=$(".userinfodrop").attr("style");
+                if(style=="display:block;"){
+                    $("#userinfodrop").removeAttr("style");
+                    $("#userinfodrop").attr("style","display:none;");
+                }else{
+                    $("#userinfodrop").removeAttr("style");
+                    $("#userinfodrop").attr("style","display:block;");
+                }
             });
             $(".editBtn").each(function () {
                 $(this).click(function () {
@@ -179,6 +193,29 @@
                 <img src="assets/img/avatar1.png" alt=""/>
                 <span>尊敬的用户，欢迎您</span>
             </div><!--userinfo-->
+            <div id="userinfodrop" class="userinfodrop" style="display:none;">
+                <div class="avatar">
+                    <img src="assets/img/avatar1.png" alt="" />
+                    <div class="changetheme">
+                        切换主题: <br />
+                        <a class="default"></a>
+                        <a class="blueline"></a>
+                        <a class="greenline"></a>
+                        <a class="contrast"></a>
+                        <a class="custombg"></a>
+                    </div>
+                </div><!--avatar-->
+                <div class="userdata">
+                    <h4>Van</h4>
+                    <span class="email">do you want to 玩游戏？</span>
+                    <ul>
+                        <li ><a href="javascript:;">开发中</a></li>
+                        <li ><a href="javascript:;">开发中</a></li>
+                        <li ><a href="user/index" style="font-color: black;">个人主页</a></li>
+                        <li ><a href="homePage/exit">退出</a></li>
+                    </ul>
+                </div><!--userdata-->
+            </div><!--userinfodrop-->
 
         </div><!--right-->
     </div><!--topheader-->

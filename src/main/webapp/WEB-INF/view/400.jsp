@@ -1,7 +1,10 @@
+<%@ page isELIgnored="false" contentType="text/html;charset=UTF-8" language="java" %>
+<% pageContext.setAttribute("APP_PATH", request.getContextPath()); %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!doctype html>
 <html>
 <head>
-<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -10,7 +13,7 @@
 %>
 <base href="<%=basePath%>"></base>
 <meta charset="utf-8">
-<title>登录失败</title>
+<title>操作失败！</title>
 <link href="assets/css/pintuer.css" rel="stylesheet"/>
 <style>
 *{ margin:0; padding:0; list-style:none;}
@@ -29,8 +32,8 @@ body,html{ height:100%; font-family:'微软雅黑'; overflow-y:hidden;}
    <div class="main_left"><img src="assets/img/img2.png" width="229" height="128"/></div>
    <div class="main_right">
       <div class="main_radius">
-         <p class="main_p">登录失败</p>
-         <p class="main_p">帐号或者密码错误！</p>
+         <p class="main_p">后端校验失败</p>
+         <p class="main_p">相关信息:${msg}</p>
       </div>
       <div class="text-left" style="margin-top:10%; margin-left:8%;">
           <a href="login" class="button bg-yellow">返回首页</a>

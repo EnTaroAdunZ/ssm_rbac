@@ -8,8 +8,10 @@ import java.util.List;
 public class Role {
     private Long id;
 
+//    @Pattern(regexp = "^[a-z0-9_-]{3,30}$",message = "角色代码必须是3-30位英文和数字组合")
     private String sn;
 
+//    @Pattern(regexp = "^[\\u2E80-\\u9FFF]{1,10}$",message = "角色名必须是3-30位英文和数字组合")
     private String name;
 
     private List<Permission> permissionList;

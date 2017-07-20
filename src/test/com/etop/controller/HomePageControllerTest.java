@@ -33,9 +33,23 @@ public class HomePageControllerTest {
     @Autowired
     WebApplicationContext context;
 
+    @Autowired
+    LoginController loginController;
+
     @Before
     public void intitMockMvc(){
         mockMvc= MockMvcBuilders.webAppContextSetup(context).build();
+    }
+
+    @Test
+    public void testLogin() throws Exception {
+        User user = new User();
+        MvcResult mvcResult= mockMvc.perform(MockMvcRequestBuilders
+                .post("user/index")
+                .requestAttr("user",user))
+                .andReturn();
+        MockHttpServletRequest request = mvcResult.getRequest();
+
     }
 
     @Test

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +83,15 @@ public class UserController{
     @RequiredPermission("用户添加")
     @RequestMapping("/userAdd")
     public ModelAndView roleAdd(User user){
+        if(user.getAccount()==null||
+                user.getName()==null||
+                user.getAge()==null||
+                user.getPassword()==null||
+                user.getExperience()==null||
+                user.getPhone()==null
+                ){
+            return new ModelAndView("redirect:/homePage/roleManagement").addObject("msg","用户信息不能为空..");
+        }
         userService.insert(user);
         return new ModelAndView("redirect:/homePage/userManagement");
     }
@@ -93,7 +104,14 @@ public class UserController{
     }
     @RequiredPermission("用户删除")
     @RequestMapping("/userDelete")
-    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0") Long ID){
+    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0")
+     Long ID,HttpServletRequest httpServletRequest){
+        HttpSession session =
+                httpServletRequest.getSession();
+        Long id = (Long) session.getAttribute("id");
+        if(id==ID){
+            return new ModelAndView("redirect:/homePage/exit");
+        }
         userService.deleteByPrimaryKey(ID);
         return new ModelAndView("redirect:/homePage/userManagement");
     }

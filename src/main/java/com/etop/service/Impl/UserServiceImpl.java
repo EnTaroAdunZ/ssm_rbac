@@ -3,6 +3,7 @@ package com.etop.service.Impl;
 import com.etop.dao.UserMapper;
 import com.etop.pojo.User;
 import com.etop.service.IUserService;
+import com.etop.util.PasswordUtil;
 import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,6 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public List<User> selectByKeyWord(String keyWord) {
-
-
         return userMapper.selectByKeyWord(keyWord);
     }
 
@@ -61,10 +60,14 @@ public class UserServiceImpl implements IUserService{
         if(user!=null){
             throw new RuntimeException("帐号已经存在！请换一个帐号!");
         }
-        User user1 = userMapper.selectByName(user.getName());
+        User user1 = userMapper.selectByName(record.getName());
         if(user1!=null){
             throw new RuntimeException("昵称已经存在！请换一个昵称!");
         }
+
+        //开始加密过程
+        String generate = PasswordUtil.generate(record.getPassword());
+        record.setPassword(generate);
         return userMapper.insert(record);
     }
 
