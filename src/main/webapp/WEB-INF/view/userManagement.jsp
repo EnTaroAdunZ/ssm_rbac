@@ -39,15 +39,10 @@
             margin-bottom: 5px;
         }
 
-        .leftBg {
-            height: 100%;
-            padding: 0px;
-            background: #485b79;
-
-        }
-
-        #leftBg {
-            top: 179px;
+        .vernav {
+            width: 240px!important;
+            left: -10px!important;
+            top: 169px!important;
         }
         .ajax_btn{
             margin-right: 5px;
@@ -726,9 +721,18 @@
 
     </div><!--header-->
 
-    <div class="vernav2 iconmenu leftBg" id="leftBg">
-
+    <div class="vernav">
+        <ul>
+            <li class="current"><a href="homePage/userManagement" class="editor">用户管理</a></li>
+            <li><a href="homePage/roleManagement">角色管理</a></li>
+            <li><a href="homePage/permissionManagement">权限管理</a></li>
+            <li><a href="permission/permissionTest">功能模拟</a></li>
+        </ul>
     </div><!--leftmenu-->
+
+    <%--<div class="vernav2 iconmenu leftBg" id="leftBg">--%>
+
+    <%--</div><!--leftmenu-->--%>
     <div class="centercontent">
         <div class="container-fiuled">
             <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">

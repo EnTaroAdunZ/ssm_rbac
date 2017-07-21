@@ -44,7 +44,11 @@
         .userdata ul li a{
             color: #000000!important;
         }
-
+        .vernav {
+            width: 240px!important;
+            left: -10px!important;
+            top: 169px!important;
+        }
         #leftBg {
             top: 179px;
         }
@@ -175,8 +179,8 @@
             <span class="slogan">权限管理系统</span>
 
             <div class="search">
-                <form action="" method="post">
-                    <input type="text" name="keyword" id="keyword" value="请输入"/>
+                <form action="${ pageContext.request.contextPath }/homePage/roleManagement" method="post">
+                    <input type="text" name="keyWord" id="keyWord" placeholder="请输入"/>
                     <button class="submitbutton"></button>
                 </form>
             </div><!--search-->
@@ -244,9 +248,15 @@
 
     </div><!--header-->
 
-    <div class="vernav2 iconmenu leftBg" id="leftBg">
-
+    <div class="vernav">
+        <ul>
+            <li ><a href="homePage/userManagement" class="editor">用户管理</a></li>
+            <li class="current"><a href="homePage/roleManagement">角色管理</a></li>
+            <li><a href="homePage/permissionManagement">权限管理</a></li>
+            <li><a href="permission/permissionTest">功能模拟</a></li>
+        </ul>
     </div><!--leftmenu-->
+
     <div class="centercontent">
         <div class="container-fiuled">
             <div class="modal fade" id="preModal" tabindex="-1" role="dialog" aria-labelledby="preModalLabel">
@@ -302,7 +312,7 @@
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="role/roleEdit" method="post">
+                        <form role="form" action="role/roleEdit?pn=${pageInfo.pageNum+1}&&keyWord=${keyWord}" method="post">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span
@@ -312,11 +322,11 @@
                             <div class="modal-body">
                                 <p>ID</p>
                                 <input id="editID" name="id" readonly="readonly" class="form-control" type="text"
-                                       name="expression"></input>
+                                       name="expression"/>
                             </div>
                             <div class="modal-body">
                                 <p>角色代号</p>
-                                <input id="editSn" class="form-control" type="text" name="sn"></input>
+                                <input id="editSn" class="form-control" type="text" name="sn"/>
                             </div>
                             <div class="modal-body">
                                 <p>角色名</p>
@@ -334,7 +344,7 @@
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="role/roleDelete" method="post">
+                        <form role="form" action="role/roleDelete?pn=${pageInfo.pageNum+1}&&keyWord=${keyWord}" method="post">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span
@@ -416,9 +426,9 @@
                 <div class="col-md-6">
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
-                            <li><a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=1">首页</a></li>
+                            <li><a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=1&&keyWord=${keyWord}">首页</a></li>
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pageNum-1}"
+                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pageNum-1}&&keyWord=${keyWord}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -426,24 +436,24 @@
                             <c:forEach items="${pageInfo.navigatepageNums}" var="index">
                                 <c:if test="${index==pageInfo.pageNum}">
                                     <li class="active"><a
-                                            href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${index}">${index}</a>
+                                            href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${index}&&keyWord=${keyWord}">${index}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${index!=pageInfo.pageNum}">
                                     <li>
-                                        <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${index}">${index}</a>
+                                        <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${index}&&keyWord=${keyWord}">${index}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
 
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pageNum+1}"
+                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pageNum+1}&&keyWord=${keyWord}"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pages}">末页</a>
+                                <a href="${ pageContext.request.contextPath }/homePage/roleManagement?pn=${pageInfo.pages}&&keyWord=${keyWord}">末页</a>
                             </li>
                         </ul>
                     </nav>

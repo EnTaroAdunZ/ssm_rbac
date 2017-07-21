@@ -54,4 +54,9 @@
     left join tbl_permission on tbl_permission.id =role_rp_ref_permission.permission
     WHERE  tbl_role.id = #{wid}
   </select>
+  <select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, sn, name
+     from tbl_role
+    WHERE name LIKE CONCAT(CONCAT('%',#{keyWord},'%'))
+  </select>
 </mapper>

@@ -13,7 +13,7 @@ import java.util.List;
 public interface IRoleService {
     List<Role> getRoles();
     int deleteByPrimaryKey(Long id);
-
+    List<Role> selectByKeyWord(String keyWord);
     int insert(Role record);
     Role selectByPrimaryKey(Long id);
     int updateByPrimaryKey(Role record);

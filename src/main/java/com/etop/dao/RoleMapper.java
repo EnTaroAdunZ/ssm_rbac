@@ -15,4 +15,5 @@ public interface RoleMapper {
     Role selectBySn(String sn);
     Role selectByName(String name);
     List<Role> listPermission(Long wid);
+    List<Role> selectByKeyWord(String keyWord);
 }

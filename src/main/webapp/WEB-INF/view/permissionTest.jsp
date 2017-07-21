@@ -36,6 +36,11 @@
             background: #485b79;
 
         }
+        .vernav {
+            width: 240px!important;
+            left: -10px!important;
+            top: 169px!important;
+        }
 
         #leftBg {
             top: 179px;
@@ -121,12 +126,12 @@
             <h1 class="logo">新日暮里.<span>研究所</span></h1>
             <span class="slogan">权限管理系统</span>
 
-            <div class="search">
-                <form action="" method="post">
-                    <input type="text" name="keyword" id="keyword" value="请输入"/>
-                    <button class="submitbutton"></button>
-                </form>
-            </div><!--search-->
+            <%--<div class="search">--%>
+                <%--<form action="" method="post">--%>
+                    <%--<input type="text" name="keyword" id="keyword" value="请输入"/>--%>
+                    <%--<button class="submitbutton"></button>--%>
+                <%--</form>--%>
+            <%--</div><!--search-->--%>
 
             <br clear="all"/>
 
@@ -192,9 +197,15 @@
 
     </div><!--header-->
 
-    <div class="vernav2 iconmenu leftBg" id="leftBg">
-
+    <div class="vernav">
+        <ul>
+            <li ><a href="homePage/userManagement" class="editor">用户管理</a></li>
+            <li><a href="homePage/roleManagement">角色管理</a></li>
+            <li ><a href="homePage/permissionManagement">权限管理</a></li>
+            <li class="current"><a href="permission/permissionTest">功能模拟</a></li>
+        </ul>
     </div><!--leftmenu-->
+
     <div class="centercontent">
         <div class="container-fiuled">
 

@@ -77,15 +77,24 @@ public class RoleController {
     public ModelAndView roleEdit(Role role,
             @RequestParam(value = "pn",defaultValue ="1")Integer pn,
                                  @RequestParam(value = "wid",defaultValue ="0")Long wid,
-                                 Model model){
+                                 Model model,@RequestParam(value = "keyWord",defaultValue ="")String keyWord){
         roleService.updateByPrimaryKey(role);
-        return new ModelAndView("redirect:/homePage/roleManagement");
+        ModelAndView modelAndView = new ModelAndView("redirect:/homePage/roleManagement");
+        modelAndView.addObject("keyWord",keyWord);
+        modelAndView.addObject("pn",pn);
+        return modelAndView;
+
     }
     @RequiredPermission("角色删除")
     @RequestMapping("/roleDelete")
-    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0") Long ID){
+    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0") Long ID, @RequestParam(value = "pn",defaultValue ="1")Integer pn,
+                                   @RequestParam(value = "wid",defaultValue ="0")Long wid,
+                                   Model model,@RequestParam(value = "keyWord",defaultValue ="")String keyWord){
         roleService.deleteByPrimaryKey(ID);
-        return new ModelAndView("redirect:/homePage/roleManagement");
+        ModelAndView modelAndView = new ModelAndView("redirect:/homePage/roleManagement");
+        modelAndView.addObject("keyWord",keyWord);
+        modelAndView.addObject("pn",pn);
+        return modelAndView;
     }
 
     @RequiredPermission("权限分配")

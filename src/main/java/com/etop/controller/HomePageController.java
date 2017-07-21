@@ -70,12 +70,14 @@ public class HomePageController{
 
     @RequiredPermission("角色查询")
     @RequestMapping("/roleManagement")
-    public ModelAndView roleManagement(@RequestParam(value = "pn",defaultValue ="1")Integer pn, Model model){
+    public ModelAndView roleManagement(@RequestParam(value = "pn",defaultValue ="1")Integer pn
+            , Model model,@RequestParam(value = "keyWord",defaultValue ="")String keyWord){
         ModelAndView mav = new ModelAndView("roleManagement");
         PageHelper.startPage(pn, 10);
-        List<Role> roles = roleService.getRoles();
+        List<Role> roles = roleService.selectByKeyWord(keyWord);
         PageInfo pageInfo=new PageInfo(roles);
         model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("keyWord",keyWord);
         return mav;
     }
 
