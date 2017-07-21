@@ -105,6 +105,12 @@ public class PermissionImpl implements IPermissionService,ApplicationContextAwar
     }
 
     @Override
+    public List<Permission> selectByKeyWord(String keyWord) {
+        return permissionMapper.selectByKeyWord(keyWord);
+    }
+
+
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.ctx=applicationContext;
 

@@ -16,4 +16,5 @@ public interface IPermissionService {
     int deleteByPrimaryKey(Long id);
     int updateByPrimaryKey(Permission record);
     Permission selectByPrimaryKey(Long id);
+    List<Permission> selectByKeyWord(String keyWord);
 }

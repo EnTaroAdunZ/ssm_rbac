@@ -42,5 +42,9 @@
     select id, expression, name
     from tbl_permission
   </select>
-
+  <select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, expression, name
+    from tbl_permission
+    WHERE name LIKE CONCAT(CONCAT('%',#{keyWord},'%'))
+  </select>
 </mapper>

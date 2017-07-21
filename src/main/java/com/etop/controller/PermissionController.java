@@ -68,19 +68,27 @@ public class PermissionController{
     }
     @RequiredPermission("权限编辑")
     @RequestMapping("/permissionEdit")
-    public ModelAndView roleEdit(Permission permission){
+    public ModelAndView roleEdit(Permission permission,@RequestParam(value = "pn",defaultValue ="1")Integer pn
+            , Model model,@RequestParam(value = "keyWord",defaultValue ="") String keyWord){
         StringBuilder sb= new StringBuilder().append("com.test.");
         sb.append(permission.getExpression());
         permission.setExpression(sb.toString());
         permissionService.updateByPrimaryKey(permission);
-        return new ModelAndView("redirect:/homePage/permissionManagement");
+        ModelAndView modelAndView = new ModelAndView("redirect:/homePage/permissionManagement");
+        modelAndView.addObject("keyWord",keyWord);
+        modelAndView.addObject("pn",pn);
+        return modelAndView;
     }
     @RequiredPermission("权限删除")
     @RequestMapping("/permissionDelete")
-    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0") Long ID){
+    public ModelAndView roleDelete(@RequestParam(value = "ID",defaultValue ="0") Long ID,@RequestParam(value = "pn",defaultValue ="1")Integer pn
+            , Model model,@RequestParam(value = "keyWord",defaultValue ="") String keyWord){
         permissionService.deleteByPrimaryKey(ID);
 
-        return new ModelAndView("redirect:/homePage/permissionManagement");
+        ModelAndView modelAndView = new ModelAndView("redirect:/homePage/permissionManagement");
+        modelAndView.addObject("keyWord",keyWord);
+        modelAndView.addObject("pn",pn);
+        return modelAndView;
     }
 
 

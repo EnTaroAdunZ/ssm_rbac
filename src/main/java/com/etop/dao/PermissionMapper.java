@@ -10,7 +10,7 @@ public interface PermissionMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(Permission record);
-
+    List<Permission> selectByKeyWord(String keyWord);
     Permission selectByPrimaryKey(Long id);
     Permission selectByName(String name);
     Permission selectByExpression(String expression);

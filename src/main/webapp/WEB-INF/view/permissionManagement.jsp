@@ -100,9 +100,9 @@
             <span class="slogan">权限管理系统</span>
 
             <div class="search">
-                <form action="" method="post">
-                    <input type="text" name="keyword" id="keyword" value="请输入"/>
-                    <button class="submitbutton"></button>
+                <form action="${ pageContext.request.contextPath }/homePage/permissionManagement" method="post">
+                    <input type="text" name="keyWord" id="keyWord" placeholder="请输入"/>
+                    <button class="submitbutton" type="submit"></button>
                 </form>
             </div><!--search-->
 
@@ -205,7 +205,7 @@
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="permission/permissionEdit" method="post">
+                        <form role="form" action="permission/permissionEdit?pn=${pageInfo.pageNum}&&keyWord=${keyWord}" method="post">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -236,7 +236,7 @@
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form role="form" action="permission/permissionDelete" method="post">
+                        <form role="form" action="permission/permissionDelete?pn=${pageInfo.pageNum}&&keyWord=${keyWord}" method="post">
                             <div class="modal-header">
                                 <button data-dismiss="modal" class="close" type="button"><span
                                         aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -313,10 +313,10 @@
                 <div class="col-md-6">
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
-                            <li><a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=1">首页</a>
+                            <li><a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=1&&keyWord=${keyWord}">首页</a>
                             </li>
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pageNum-1}"
+                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pageNum-1}&&keyWord=${keyWord}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -324,24 +324,24 @@
                             <c:forEach items="${pageInfo.navigatepageNums}" var="index">
                                 <c:if test="${index==pageInfo.pageNum}">
                                     <li class="active"><a
-                                            href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${index}">${index}</a>
+                                            href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${index}&&keyWord=${keyWord}">${index}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${index!=pageInfo.pageNum}">
                                     <li>
-                                        <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${index}">${index}</a>
+                                        <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${index}&&keyWord=${keyWord}">${index}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
 
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pageNum+1}"
+                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pageNum+1}&&keyWord=${keyWord}"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pages}">末页</a>
+                                <a href="${ pageContext.request.contextPath }/homePage/permissionManagement?pn=${pageInfo.pages}&&keyWord=${keyWord}">末页</a>
                             </li>
                         </ul>
                     </nav>

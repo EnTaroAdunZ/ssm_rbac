@@ -11,6 +11,7 @@ import com.etop.util.RequiredPermission;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -55,13 +57,14 @@ public class HomePageController{
 
     @RequestMapping("/permissionManagement")
     @RequiredPermission("权限查询")
-    public ModelAndView permissionManagement(@RequestParam(value = "pn",defaultValue ="1")Integer pn, Model model){
-
+    public ModelAndView permissionManagement(@RequestParam(value = "pn",defaultValue ="1")Integer pn
+            , Model model,@RequestParam(value = "keyWord",defaultValue ="") String keyWord) throws UnsupportedEncodingException {
         ModelAndView mav = new ModelAndView("permissionManagement");
         PageHelper.startPage(pn, 10);
-        List<Permission> list = permissionService.list();
-        PageInfo pageInfo=new PageInfo(list);
+        List<Permission> permissions = permissionService.selectByKeyWord(keyWord);
+        PageInfo pageInfo=new PageInfo(permissions);
         model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("keyWord",keyWord);
         return mav;
     }
 
