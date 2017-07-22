@@ -19,6 +19,8 @@ public class  ControllerAspect {
     @Pointcut("execution(* com.etop.controller.*.*(..))")
     private void anyMethod(){}//定义一个切入点
 
+
+
     @Around("anyMethod()")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         System.out.println("start log:" + joinPoint.getSignature().getName());

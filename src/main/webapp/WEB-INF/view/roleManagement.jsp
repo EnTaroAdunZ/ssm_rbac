@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="assets/css/style.default.css" type="text/css"/>
     <script src="${APP_PATH}/assets/js/jquery-1.11.1.min.js"></script>
     <link href="${APP_PATH}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <script src="${APP_PATH}/assets/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="${APP_PATH}/assets/css/treeStyle.css" type="text/css"/>
     <style>
         a {
             text-decoration: none;
@@ -53,6 +53,22 @@
             top: 179px;
         }
     </style>
+    <script type="text/javascript">
+        $(function(){
+            $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+            $('.tree li.parent_li > span').on('click', function (e) {
+                var children = $(this).parent('li.parent_li').find(' > ul > li');
+                if (children.is(":visible")) {
+                    children.hide('fast');
+                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                } else {
+                    children.show('fast');
+                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                }
+                e.stopPropagation();
+            });
+        });
+    </script>
     <script>
         var ID;
         $(document).ready(function () {
@@ -169,6 +185,9 @@
             });
         });
     </script>
+
+
+
 </head>
 <body class="withvernav">
 
@@ -282,6 +301,7 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div>
+
             <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -364,6 +384,43 @@
                 </div><!-- /.modal-dialog -->
             </div>
 
+            <div class="modal fade" id="dtreeModal" tabindex="-1" role="dialog" aria-labelledby="preModalLabel">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form role="form" action="role/roleAdd" method="post">
+                            <div class="modal-header">
+                                <button data-dismiss="modal" class="close" type="button"><span
+                                        aria-hidden="true">×</span><span
+                                        class="sr-only">Close</span></button>
+                                <h4 class="modal-title">树形分配</h4>
+                            </div>
+                            <div class="modal-body" >
+                                <div class="tree well">
+                                    <ul>
+                                        <li>
+                                            <span><i class="icon-folder-open"></i>第一级节点</span>
+                                            <ul>
+                                                <li> <span><i class="icon-minus-sign"></i>第一级_1节点</span></li>
+
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span>第二级节点</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button  data-dismiss="modal" class="btn btn-default" type="button">
+                                    关闭
+                                </button>
+                                <button  class="btn btn-primary" type="button">提交</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <table class="table table-hover table table-striped">
@@ -383,6 +440,10 @@
                                     <button name="${role.id}"
                                             class="preBtn btn btn-info glyphicon glyphicon-eye-open btn-sm"
                                             data-toggle="modal" data-target="#preModal"> 权限分配
+                                    </button>
+                                    <button name="${role.id}"
+                                            class="preBtn btn btn-info glyphicon glyphicon-eye-open btn-sm"
+                                            data-toggle="modal" data-target="#dtreeModal"> 树形分配
                                     </button>
                                     <c:choose>
                                         <c:when test="${fn:contains(role.name,'系统管理员')||fn:contains(role.name,'管理员')||fn:contains(role.name,'普通用户')}">
